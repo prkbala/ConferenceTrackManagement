@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConferenceTrackManagement
 {
-    public enum SessionType
+    public enum TalkSessionType
     {
         Morning,
         Evening

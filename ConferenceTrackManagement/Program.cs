@@ -37,7 +37,7 @@ namespace ConferenceTrackManagement
 
             var conferencePlanner = new SimpleConferencePlanner(new TitleDurationSplitter());
             var conference = conferencePlanner.PlanAConference(conferenceStartDate, inputTalkList);
-            var printableList = conference.GetPrintablePlan();
+            var printableList = new SimplePrintFormatter().GetPrintablePlan(conference);
             foreach (var entry in printableList)
             {
                 Console.WriteLine(entry);

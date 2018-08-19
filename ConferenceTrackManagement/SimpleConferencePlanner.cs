@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace ConferenceTrackManagement
 {
-    interface IConferencePlanner
+    public interface IConferencePlanner
     {
         Conference PlanAConference(DateTime conferenceStartDate, List<string> inputTalkList);
     }
 
-    class SimpleConferencePlanner : IConferencePlanner
+    public class SimpleConferencePlanner : IConferencePlanner
     {
         private ITitleDurationSplitter _titleDurationSplitter;
 
@@ -28,7 +28,7 @@ namespace ConferenceTrackManagement
             var track = new Track(conferenceStartDate);
             track.AddASession(currentSession);
 
-            var conference = new Conference(new SimplePrintFormatter());
+            var conference = new Conference();
             conference.AddATrack(track);
 
             var currentSessionTime = currentSession.StartTime;
@@ -38,7 +38,7 @@ namespace ConferenceTrackManagement
                 if (FitATalkIntoASession(talk, currentSession, ref currentSessionTime))
                     continue;
 
-                if (currentSession.SessionType == SessionType.Morning)
+                if (currentSession.SessionType == TalkSessionType.Morning)
                 {
                     currentSession = CreateANewTalkSession(currentSession.StartTime.Value.Date, true);
                     track.AddASession(currentSession);

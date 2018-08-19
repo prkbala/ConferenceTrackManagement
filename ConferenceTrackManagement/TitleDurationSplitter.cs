@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace ConferenceTrackManagement
 {
-    internal interface ITitleDurationSplitter
+    public interface ITitleDurationSplitter
     {
         List<Talk> GetTalkList(List<string> talkList);
     }
 
-    class TitleDurationSplitter : ITitleDurationSplitter
+    public class TitleDurationSplitter : ITitleDurationSplitter
     {
-        private const string DurationMatchRegexString = @"(\b-?\d+\S*min\b)$";
+        private const string DurationMatchRegexString = @" (\b-?\d+\S*min\b)$";
         private const string DurationValueRegexString = @"-?\d+";
-        private const string LightningString = @"lightning$";
+        private const string LightningString = @" lightning$";
 
         public virtual List<Talk> GetTalkList(List<string> inputTalkList)
         {
@@ -25,12 +25,6 @@ namespace ConferenceTrackManagement
             {
                 var duration = GetTalkDurationFromTalkString(talk);
                 var titleStr = GetTalkTitleFromTalkString(talk);
-
-                //if (durationStringAndValue.Duration <= ZeroTimeSpan || string.IsNullOrEmpty(titleStr))
-                //{
-                //    InValidTalks.Add(title);
-                //    continue;
-                //}
                 talkList.Add(new Talk(titleStr, duration));
             }
             return talkList;
@@ -55,8 +49,7 @@ namespace ConferenceTrackManagement
 
             return new Duration
             {
-                DurationPortionFromTitle = durationPortion.Value,
-                DurationValue = durationValue,
+                DurationPortionFromTitle = durationPortion.Value.TrimStart(' '),
                 DurationInTimeSpan = new TimeSpan(0, durationValue, 0)
             };
         }

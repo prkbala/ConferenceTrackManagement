@@ -9,19 +9,18 @@ namespace ConferenceTrackManagement
     public class TalkSession : Session
     {
         public List<Talk> Talks { get; private set; }
-        public SessionType SessionType
+        public TalkSessionType SessionType
         {
             get
             {
                 if (StartTime.Value.ToString("tt") == "AM")
-                    return SessionType.Morning;
+                    return TalkSessionType.Morning;
                 else
-                    return SessionType.Evening;
+                    return TalkSessionType.Evening;
             }
         }
 
-        public TalkSession(DateTime startTime, DateTime endTime) : base(startTime, endTime)
-        {}
+        public TalkSession(DateTime startTime, DateTime endTime) : base(startTime, endTime) { }
 
         public void AddATalk(Talk talk)
         {

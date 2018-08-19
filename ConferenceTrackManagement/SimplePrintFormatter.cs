@@ -35,7 +35,7 @@ namespace ConferenceTrackManagement
         {
             foreach (var talkSession in track.TalkSessions)
             {
-                if (talkSession.SessionType == SessionType.Morning)
+                if (talkSession.SessionType == TalkSessionType.Morning)
                 {
                     foreach (var talk in talkSession.Talks)
                     {

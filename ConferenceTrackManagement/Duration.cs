@@ -8,7 +8,6 @@ namespace ConferenceTrackManagement
 {
     public class Duration
     {
-        public int DurationValue { get; set; }
         public string DurationPortionFromTitle { get; set; }
         public TimeSpan DurationInTimeSpan { get; set; }
     }

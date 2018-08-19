@@ -9,8 +9,8 @@ namespace ConferenceTrackManagement
     public class Track
     {
         public List<TalkSession> TalkSessions { get; private set; }
-        public Session LunchSession;
-        public Session NetworkingSession;
+        public Session LunchSession { get; private set; }
+        public Session NetworkingSession { get; private set; }
       
         public Track(DateTime trackDay)
         {
@@ -18,7 +18,7 @@ namespace ConferenceTrackManagement
             NetworkingSession = new Session(trackDay.Date + ConferenceSettings.NetworkingSessionStart);
         }
 
-        internal void AddASession(TalkSession session)
+        public void AddASession(TalkSession session)
         {
             if (TalkSessions == null)
                 TalkSessions = new List<TalkSession>();
