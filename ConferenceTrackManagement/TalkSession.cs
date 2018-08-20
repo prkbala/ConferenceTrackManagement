@@ -1,26 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConferenceTrackManagement
 {
     public class TalkSession : Session
     {
-        public List<Talk> Talks { get; private set; }
-        public TalkSessionType SessionType
+        public TalkSession(DateTime startTime, DateTime endTime) : base(startTime, endTime)
         {
-            get
-            {
-                if (StartTime.Value.ToString("tt") == "AM")
-                    return TalkSessionType.Morning;
-                else
-                    return TalkSessionType.Evening;
-            }
         }
 
-        public TalkSession(DateTime startTime, DateTime endTime) : base(startTime, endTime) { }
+        public List<Talk> Talks { get; private set; }
+
+        public TalkSessionType SessionType =>
+            StartTime?.ToString("tt") == "AM" ? TalkSessionType.Morning : TalkSessionType.Evening;
 
         public void AddATalk(Talk talk)
         {
@@ -28,6 +20,6 @@ namespace ConferenceTrackManagement
                 Talks = new List<Talk>();
 
             Talks.Add(talk);
-        }        
+        }
     }
 }

@@ -1,14 +1,11 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NUnit.Framework;
 
 namespace ConferenceTrackManagement.Tests
 {
     [TestFixture]
-    class SimpleConferencePlannerTests
+    internal class SimpleConferencePlannerTests
     {
         [Test]
         public void PlanAConferenceTest()

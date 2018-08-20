@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConferenceTrackManagement
 {
@@ -15,5 +11,5 @@ namespace ConferenceTrackManagement
         public static TimeSpan EveningSessionEnd = new TimeSpan(17, 0, 0);
         public static TimeSpan LunchSessionStart = new TimeSpan(12, 0, 0);
         public static TimeSpan NetworkingSessionStart = new TimeSpan(17, 0, 0);
-    }       
+    }
 }

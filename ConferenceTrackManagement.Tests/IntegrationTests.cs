@@ -1,10 +1,6 @@
-﻿using ConferenceTrackManagement;
-using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NUnit.Framework;
 
 namespace ConferenceTrackManagement.Tests
 {
@@ -70,7 +66,7 @@ namespace ConferenceTrackManagement.Tests
             //Action
             var conferencePlanner = new SimpleConferencePlanner(new TitleDurationSplitter());
             var conference = conferencePlanner.PlanAConference(conferenceStartDate, inputTalkList);
-            var actualOutputList = new SimplePrintFormatter().GetPrintablePlan(conference);           
+            var actualOutputList = new SimplePrintFormatter().GetPrintablePlan(conference);
 
             //Assert
             Assert.AreEqual(expectedOutputList, actualOutputList);
@@ -114,11 +110,10 @@ namespace ConferenceTrackManagement.Tests
             //Action
             var conferencePlanner = new SimpleConferencePlanner(new TitleDurationSplitter());
             var conference = conferencePlanner.PlanAConference(conferenceStartDate, inputTalkList);
-            var actualOutputList = new SimplePrintFormatter().GetPrintablePlan(conference);           
+            var actualOutputList = new SimplePrintFormatter().GetPrintablePlan(conference);
 
             //Assert
             Assert.AreEqual(expectedOutputList, actualOutputList);
         }
     }
-
 }

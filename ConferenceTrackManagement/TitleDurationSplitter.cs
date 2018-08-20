@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace ConferenceTrackManagement
 {
@@ -20,14 +18,10 @@ namespace ConferenceTrackManagement
 
         public virtual List<Talk> GetTalkList(List<string> inputTalkList)
         {
-            var talkList = new List<Talk>();
-            foreach (var talk in inputTalkList)
-            {
-                var duration = GetTalkDurationFromTalkString(talk);
-                var titleStr = GetTalkTitleFromTalkString(talk);
-                talkList.Add(new Talk(titleStr, duration));
-            }
-            return talkList;
+            return (from talk in inputTalkList
+                let duration = GetTalkDurationFromTalkString(talk)
+                let titleStr = GetTalkTitleFromTalkString(talk)
+                select new Talk(titleStr, duration)).ToList();
         }
 
         private static Duration GetTalkDurationFromTalkString(string talk)
@@ -57,11 +51,9 @@ namespace ConferenceTrackManagement
         private static string GetTalkTitleFromTalkString(string title)
         {
             var titleStr = Regex.Split(title, DurationMatchRegexString);
-            if (new List<string>(titleStr).Count < 2)
-            {
+            if(titleStr.Length < 2)
                 titleStr = Regex.Split(title, LightningString);
-            }
             return titleStr[0];
-        }       
+        }
     }
 }

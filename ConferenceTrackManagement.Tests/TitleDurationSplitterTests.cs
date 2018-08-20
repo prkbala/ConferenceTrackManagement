@@ -1,14 +1,11 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NUnit.Framework;
 
 namespace ConferenceTrackManagement.Tests
 {
     [TestFixture]
-    class TitleDurationSplitterTests
+    internal class TitleDurationSplitterTests
     {
         [Test]
         public void GetTalkListTest()
@@ -19,7 +16,6 @@ namespace ConferenceTrackManagement.Tests
                 "Writing Fast Tests Against Enterprise Rails 60min",
                 "Lua for the Masses lightning"
             };
-            var conferenceStartDate = new DateTime(2018, 8, 24);
             var expectedTalkList = new List<Talk>
             {
                 new Talk(
@@ -44,12 +40,16 @@ namespace ConferenceTrackManagement.Tests
             //Assert
             Assert.AreEqual(expectedTalkList.Count, actualTalkList.Count);
             Assert.AreEqual(expectedTalkList[0].Title, actualTalkList[0].Title);
-            Assert.AreEqual(expectedTalkList[0].Duration.DurationInTimeSpan, actualTalkList[0].Duration.DurationInTimeSpan);
-            Assert.AreEqual(expectedTalkList[0].Duration.DurationPortionFromTitle, actualTalkList[0].Duration.DurationPortionFromTitle);
+            Assert.AreEqual(expectedTalkList[0].Duration.DurationInTimeSpan,
+                actualTalkList[0].Duration.DurationInTimeSpan);
+            Assert.AreEqual(expectedTalkList[0].Duration.DurationPortionFromTitle,
+                actualTalkList[0].Duration.DurationPortionFromTitle);
 
             Assert.AreEqual(expectedTalkList[1].Title, actualTalkList[1].Title);
-            Assert.AreEqual(expectedTalkList[1].Duration.DurationInTimeSpan, actualTalkList[1].Duration.DurationInTimeSpan);
-            Assert.AreEqual(expectedTalkList[1].Duration.DurationPortionFromTitle, actualTalkList[1].Duration.DurationPortionFromTitle);
+            Assert.AreEqual(expectedTalkList[1].Duration.DurationInTimeSpan,
+                actualTalkList[1].Duration.DurationInTimeSpan);
+            Assert.AreEqual(expectedTalkList[1].Duration.DurationPortionFromTitle,
+                actualTalkList[1].Duration.DurationPortionFromTitle);
         }
     }
 }

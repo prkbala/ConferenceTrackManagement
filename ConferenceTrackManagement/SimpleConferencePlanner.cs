@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConferenceTrackManagement
 {
@@ -13,63 +10,74 @@ namespace ConferenceTrackManagement
 
     public class SimpleConferencePlanner : IConferencePlanner
     {
-        private ITitleDurationSplitter _titleDurationSplitter;
+        private readonly ITitleDurationSplitter _titleDurationSplitter;
+        private readonly Conference _conference;
 
         public SimpleConferencePlanner(ITitleDurationSplitter titleDurationSplitter)
-        { 
+        {
             _titleDurationSplitter = titleDurationSplitter;
+            _conference = new Conference();
         }
 
-        public virtual Conference PlanAConference(DateTime conferenceStartDate, List<string> inputTalkList)
+        public virtual Conference PlanAConference(DateTime conferenceDate, List<string> inputTalkList)
         {
             var talkList = _titleDurationSplitter.GetTalkList(inputTalkList);
 
-            var currentSession = CreateANewTalkSession(conferenceStartDate);
-            var track = new Track(conferenceStartDate);
-            track.AddASession(currentSession);
+            var currentSession = CreateANewTalkSession(conferenceDate);
+            var currentTrack = new Track(conferenceDate);
+            currentTrack.AddASession(currentSession);
 
-            var conference = new Conference();
-            conference.AddATrack(track);
+            _conference.AddATrack(currentTrack);
 
             var currentSessionTime = currentSession.StartTime;
 
             foreach (var talk in talkList)
             {
-                if (FitATalkIntoASession(talk, currentSession, ref currentSessionTime))
+                if (FitTalkIntoTheSession(talk, currentSession, ref currentSessionTime))
                     continue;
 
-                if (currentSession.SessionType == TalkSessionType.Morning)
-                {
-                    currentSession = CreateANewTalkSession(currentSession.StartTime.Value.Date, true);
-                    track.AddASession(currentSession);
-                }
-                else
-                {
-                    currentSession = CreateANewTalkSession(currentSession.StartTime.Value.Date.AddDays(1));
-                    track = new Track(currentSession.StartTime.Value.Date);
-                    track.AddASession(currentSession);
-                    conference.AddATrack(track);
-                }
-
+                //couldn't fit into the current session, so create necessary session and track
+                var currentTrackAndSession = AddNecessaryTrackAndSession(currentSession, currentTrack);
+                currentTrack = currentTrackAndSession.Item1;
+                currentSession = currentTrackAndSession.Item2;
                 currentSessionTime = currentSession.StartTime;
-                FitATalkIntoASession(talk, currentSession, ref currentSessionTime);
+                FitTalkIntoTheSession(talk, currentSession, ref currentSessionTime);
             }
-            return conference;
+            return _conference;
         }
 
-        private bool FitATalkIntoASession(Talk talk, TalkSession session, ref DateTime? currentSessionTime)
+        private Tuple<Track, TalkSession> AddNecessaryTrackAndSession(TalkSession currentSession, Track currentTrack)
         {
-            if ((talk.Duration.DurationInTimeSpan + currentSessionTime.Value.TimeOfDay) <= session.EndTime.Value.TimeOfDay)
+            if (currentSession.SessionType == TalkSessionType.Morning)
             {
-                talk.StartTime = currentSessionTime;
-                currentSessionTime = currentSessionTime + talk.Duration.DurationInTimeSpan;
-                session.AddATalk(talk);
-                return true;
+                //if current session is morning, create an evening session and add that to the current track
+                currentSession = CreateANewTalkSession(currentSession.StartTime.Value.Date, true);
+                currentTrack.AddASession(currentSession);
             }
-            return false;
+            else
+            {
+                //if current session is evening, create a new track and a morning session and add that session to the new track
+                currentSession = CreateANewTalkSession(currentSession.StartTime.Value.Date);
+                currentTrack = new Track(currentSession.StartTime.Value.Date);
+                currentTrack.AddASession(currentSession);
+                _conference.AddATrack(currentTrack);
+            }
+            
+            return new Tuple<Track, TalkSession>(currentTrack, currentSession);
         }
 
-        private TalkSession CreateANewTalkSession(DateTime sessionDay, bool isEveningSession = false)
+        private static bool FitTalkIntoTheSession(Talk talk, TalkSession session, ref DateTime? currentSessionTime)
+        {
+            if (talk.Duration.DurationInTimeSpan + currentSessionTime?.TimeOfDay >
+                session.EndTime?.TimeOfDay) return false;
+
+            talk.StartTime = currentSessionTime;
+            currentSessionTime = currentSessionTime + talk.Duration.DurationInTimeSpan;
+            session.AddATalk(talk);
+            return true;
+        }
+
+        private static TalkSession CreateANewTalkSession(DateTime sessionDay, bool isEveningSession = false)
         {
             TimeSpan startTimeSpan;
             TimeSpan endTimeSpan;
