@@ -8,4 +8,4 @@ To build the application,
 
 To run the application,
 1. Open a command prompt.
-2. Give the following command "<Path to the ConferenceTrackManagement.exe>" "<Path to the input file with the list of talks>"
+2. Give the following command "Path to the ConferenceTrackManagement.exe" "Path to the input file with the list of talks"
